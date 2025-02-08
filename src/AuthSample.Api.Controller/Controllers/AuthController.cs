@@ -1,19 +1,41 @@
+using AuthSample.Api.Controller.Authentications;
+using AuthSample.Api.Controller.Context;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AuthSample.Api.Controller.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class AuthController : ControllerBase
+public class AuthController(ITokenManager tokenManager) : ControllerBase
 {
+
+    private readonly ITokenManager _tokenManager = tokenManager;
+
     [HttpPost]
-    [ProducesResponseType<AuthResponse>(StatusCodes.Status200OK)]
-    public IActionResult Authenticate([FromBody] AuthRequest authRequest)
+    [ProducesResponseType<LoginResponse>(StatusCodes.Status200OK)]
+    public IActionResult Authenticate([FromBody] LoginRequest request)
     {
-        return Ok(new { authRequest.Email, authRequest.Password });
+        // Verificar se esta preenchido os campos
+        if(string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(request.Password))
+        {
+            return BadRequest("Prencha os campos");
+        }
+
+        //Buscar no banco de dados o usuario
+        var user = AuthAppContext.Usuarios
+            .FirstOrDefault(x => x.Email.Equals(request.Email) && 
+                                 x.Senha.Equals(request.Password));
+
+        if(user is null)
+        {
+            return BadRequest("Usuario ou Senha invalidos");
+        }
+
+        var result = new LoginResponse(_tokenManager.GenerateToken(user));
+
+        return Ok(result);
     }
 }
 
-public record AuthRequest(string Email, string Password);
-
-public record AuthResponse(string Token);
+public record LoginRequest(string Email, string Password);
+public record LoginResponse(string Token);
