@@ -1,10 +1,3 @@
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using AuthSample.Api.Controller.Context;
-using AuthSample.Api.Controller.Controllers;
-using Microsoft.IdentityModel.Tokens;
-
 namespace AuthSample.Api.Controller.Authentications;
 
 public class TokenManager(IConfiguration configuration) : ITokenManager

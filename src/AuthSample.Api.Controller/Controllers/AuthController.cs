@@ -1,8 +1,3 @@
-using AuthSample.Api.Controller.Authentications;
-using AuthSample.Api.Controller.Context;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-
 namespace AuthSample.Api.Controller.Controllers;
 
 [AllowAnonymous]
