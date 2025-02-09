@@ -1,14 +1,15 @@
 using AuthSample.Api.Controller.Authentications;
 using AuthSample.Api.Controller.Context;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AuthSample.Api.Controller.Controllers;
 
+[AllowAnonymous]
 [ApiController]
 [Route("[controller]")]
 public class AuthController(ITokenManager tokenManager) : ControllerBase
 {
-
     private readonly ITokenManager _tokenManager = tokenManager;
 
     [HttpPost]
