@@ -8,7 +8,7 @@ public static class AuthAppContext
     {
         return 
         [
-            new("admin@email.com", "123", Usuario.Administrador)
+            new("admin", "admin", Usuario.Administrador)
         ];
     }
 }

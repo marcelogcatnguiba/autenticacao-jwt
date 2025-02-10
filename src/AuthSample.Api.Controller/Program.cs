@@ -1,5 +1,3 @@
-using AuthSample.Api.Controller.Settings;
-
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
@@ -15,23 +13,7 @@ builder.Services.AddAuthentication(opt =>
 })
 .AddJwtBearer(opt => 
 {
-    var jwtSettings = Configuration.JwtSettings;
-    var tokenKey = Encoding.UTF8.GetBytes(jwtSettings.SecretKey);
-
-    opt.TokenValidationParameters = new()
-    {
-        ValidateLifetime = true,
-        ClockSkew = TimeSpan.Zero,
-
-        ValidateAudience = true,
-        ValidAudience = jwtSettings.Audience,
-
-        ValidateIssuer = true,
-        ValidIssuer = jwtSettings.Issuer,
-
-        ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(tokenKey)
-    };
+    opt.TokenValidationParameters = TokenHelper.GetTokenValidationParameters();
 });
 
 builder.Services.AddAuthorization();
