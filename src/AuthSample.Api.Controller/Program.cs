@@ -15,7 +15,8 @@ builder.Services.AddAuthentication(opt =>
 })
 .AddJwtBearer(opt => 
 {
-    var tokenKey = Encoding.UTF8.GetBytes(JwtSettings.SecretKey);
+    var jwtSettings = Configuration.JwtSettings;
+    var tokenKey = Encoding.UTF8.GetBytes(jwtSettings.SecretKey);
 
     opt.TokenValidationParameters = new()
     {
@@ -23,10 +24,10 @@ builder.Services.AddAuthentication(opt =>
         ClockSkew = TimeSpan.Zero,
 
         ValidateAudience = true,
-        ValidAudience = JwtSettings.Audience,
+        ValidAudience = jwtSettings.Audience,
 
         ValidateIssuer = true,
-        ValidIssuer = JwtSettings.Issuer,
+        ValidIssuer = jwtSettings.Issuer,
 
         ValidateIssuerSigningKey = true,
         IssuerSigningKey = new SymmetricSecurityKey(tokenKey)
